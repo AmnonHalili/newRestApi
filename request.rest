@@ -1,0 +1,14 @@
+###
+
+GET http://localhost:3000
+
+###
+
+POST http://localhost:3000
+Content-Type: application/json
+
+{
+  "owner": "John Doe",
+  "title": "My first post",
+  "content": "Hello world!"
+}
