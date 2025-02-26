@@ -1,5 +1,16 @@
 import request from 'supertest';
 import app from '../server';
+import { Server } from 'http';
+
+let server: Server;
+
+beforeAll(() => {
+    server = app.listen(4000); // הפעלת השרת פעם אחת לפני כל הטסטים
+});
+
+afterAll(async () => {
+    await new Promise((resolve) => server.close(resolve)); // סגירת השרת אחרי שהטסטים נגמרים
+});
 
 describe('REST API Tests', () => {
     test('should return a list of users', async () => {

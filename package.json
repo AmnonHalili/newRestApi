@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js",
-    "test": "jest --detectOpenHand --forceExit"
+    "test": "jest --config src/jest.config.ts"
   },
   "keywords": [],
   "author": "",
