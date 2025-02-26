@@ -1,14 +1,33 @@
-###
+### שליפת פוסטים (GET) - עם טוקן
+GET http://localhost:3000/api/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2JmMTcyMjhiNmM5MmI4OWIyZTI4ZTQiLCJpYXQiOjE3NDA1NzY2MDcsImV4cCI6MTc0MDU4MDIwN30.ya7yBDJcUI58agle2U-QL0n3s2n9pR1N8cC6wr7dGLM
 
-GET http://localhost:3000
 
-###
-
-POST http://localhost:3000
+### הרשמה - יצירת משתמש חדש
+POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 {
-  "owner": "John Doe",
-  "title": "My first post",
-  "content": "Hello world!"
+  "username": "user2",
+  "email": "user2@example.com",
+  "password": "password1234"
+}
+
+### התחברות וקבלת טוקן
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user2@example.com",
+  "password": "password1234"
+}
+
+### יצירת פוסט חדש
+POST http://localhost:3000/api/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2JmMTcyMjhiNmM5MmI4OWIyZTI4ZTQiLCJpYXQiOjE3NDA1NzY2MDcsImV4cCI6MTc0MDU4MDIwN30.ya7yBDJcUI58agle2U-QL0n3s2n9pR1N8cC6wr7dGLM
+
+{
+  "text": "My first post",
+  "imageUrl": "https://example.com/image.jpg"
 }

@@ -10,6 +10,11 @@ export class PostController {
             const { text, imageUrl } = req.body;
             const userId = req.userId;
 
+            // בדוק אם userId קיים
+            if (!userId) {
+                return res.status(401).json({ message: 'Authentication required' });
+            }
+
             const post = await PostModel.create({
                 userId,
                 text,
@@ -18,6 +23,7 @@ export class PostController {
 
             res.status(201).json(post);
         } catch (error) {
+            console.error('Create post error:', error);
             res.status(500).json({ message: 'Error creating post' });
         }
     }
@@ -43,6 +49,7 @@ export class PostController {
                 currentPage: page
             });
         } catch (error) {
+            console.error('Get posts error:', error);
             res.status(500).json({ message: 'Error fetching posts' });
         }
     }
@@ -57,6 +64,7 @@ export class PostController {
 
             res.json(posts);
         } catch (error) {
+            console.error('Get user posts error:', error);
             res.status(500).json({ message: 'Error fetching user posts' });
         }
     }
@@ -67,6 +75,11 @@ export class PostController {
             const { id } = req.params;
             const { text, imageUrl } = req.body;
             const userId = req.userId;
+
+            // בדוק אם userId קיים
+            if (!userId) {
+                return res.status(401).json({ message: 'Authentication required' });
+            }
 
             const post = await PostModel.findOne({ _id: id, userId });
             if (!post) {
@@ -81,6 +94,7 @@ export class PostController {
 
             res.json(post);
         } catch (error) {
+            console.error('Update post error:', error);
             res.status(500).json({ message: 'Error updating post' });
         }
     }
@@ -90,6 +104,11 @@ export class PostController {
         try {
             const { id } = req.params;
             const userId = req.userId;
+
+            // בדוק אם userId קיים
+            if (!userId) {
+                return res.status(401).json({ message: 'Authentication required' });
+            }
 
             const post = await PostModel.findOneAndDelete({ _id: id, userId });
             if (!post) {
@@ -101,6 +120,7 @@ export class PostController {
 
             res.json({ message: 'Post deleted successfully' });
         } catch (error) {
+            console.error('Delete post error:', error);
             res.status(500).json({ message: 'Error deleting post' });
         }
     }
@@ -111,14 +131,20 @@ export class PostController {
             const { id } = req.params;
             const userId = req.userId;
 
+            // בדוק אם userId קיים
+            if (!userId) {
+                return res.status(401).json({ message: 'Authentication required' });
+            }
+
             const post = await PostModel.findById(id);
             if (!post) {
                 return res.status(404).json({ message: 'Post not found' });
             }
 
-            const likeIndex = post.likes.indexOf(userId!);
+            // הסר את סימן הקריאה (!), הוספנו בדיקה למעלה שהערך קיים
+            const likeIndex = post.likes.indexOf(userId);
             if (likeIndex === -1) {
-                post.likes.push(userId!);
+                post.likes.push(userId);
             } else {
                 post.likes.splice(likeIndex, 1);
             }
@@ -126,6 +152,7 @@ export class PostController {
             await post.save();
             res.json(post);
         } catch (error) {
+            console.error('Toggle like error:', error);
             res.status(500).json({ message: 'Error toggling like' });
         }
     }
